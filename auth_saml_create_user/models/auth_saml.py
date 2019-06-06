@@ -9,4 +9,5 @@ class AuthSamlProvider(models.Model):
 
     create_user = fields.Boolean(
         string='Create User',
+        default=True
     )

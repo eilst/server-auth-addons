@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  db:
+    environment:
+      - POSTGRES_USER=odoodev
+      - POSTGRES_PASSWORD=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    image: postgres:10
+    volumes:
+      - dbdata:/var/lib/postgresql/data/pgdata
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
+  odoo:
+    build: ./odoo
+    ports:
+      - "8069:8069"
+      - "9999:9999"
+      - "8071:8071"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./:/mnt/extra-addons
+    links:
+      - db
+      - saml-idp
+    environment:
+      - PGHOST=db
+      - USER=odoodev
+      - PASSWORD=odoo
+      - WDB_SOCKET_SERVER=debug
+      - WDB_NO_BROWSER_AUTO_OPEN=True
+    command: ["-d","odoodev-2","--init","auth_saml_create_user"]
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
+    depends_on:
+     - db
+  saml-idp:
+    build: ./docker-test-saml-idp/
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      - SIMPLESAMLPHP_SP_ENTITY_ID=http://10.5.0.6:8069
+      - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=http://localhost/simplesaml/module.php/saml/sp/saml2-acs.php/test-sp
+      - SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=http://localhost/simplesaml/module.php/saml/sp/saml2-logout.php/test-sp
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+volumes:
+  dbdata:
+  odoo-web-data:
