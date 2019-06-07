@@ -37,7 +37,7 @@ services:
     depends_on:
      - db
   saml-idp:
-    build: ./docker-test-saml-idp/
+    build: ./docker-saml-idp/
     ports:
       - "8080:8080"
       - "8443:8443"
