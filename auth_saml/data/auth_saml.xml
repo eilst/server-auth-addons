@@ -19,9 +19,9 @@
         </ds:X509Data>
       </ds:KeyInfo>
     </md:KeyDescriptor>
-    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://10.5.0.7:8080/simplesaml/saml2/idp/SingleLogoutService.php"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SingleLogoutService.php"/>
     <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
-    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://10.5.0.7:8080/simplesaml/saml2/idp/SSOService.php"/>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SSOService.php"/>
   </md:IDPSSODescriptor>
 </md:EntityDescriptor>]]>
         </field>
@@ -78,5 +78,6 @@ ugHzwWvstIVybywY3s0ya8o=
         <field name="css_class">zocial saml</field>
         <field name="body">Log in with Authentic</field>
         <field name="enabled" eval="True"/>
+        <field name="matching_attribute">email</field>
     </record>
 </odoo>

@@ -30,7 +30,7 @@ services:
       - PASSWORD=odoo
       - WDB_SOCKET_SERVER=debug
       - WDB_NO_BROWSER_AUTO_OPEN=True
-    command: ["-d","odoodev-2","--init","auth_saml_create_user"]
+    command: ["-d","odoodev-4","--init","auth_saml_create_user"]
     networks:
       vpcbr:
         ipv4_address: 10.5.0.6
