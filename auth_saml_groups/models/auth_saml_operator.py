@@ -13,17 +13,20 @@ class AuthSamlProviderOperator(models.AbstractModel):
         """Return names of function to call on this model as operator"""
         return ('contains', 'equals')
 
-    def contains(self, saml_entry, mapping):
-        return mapping.saml_attribute in saml_entry[1] and \
-            mapping.value in map(
-                lambda x: x.decode(),
-                saml_entry[1][mapping.saml_attribute]
-        )
+    def contains(self, attrs, mapping):
+        matching_value = ''
+        for k in attrs:
+            if isinstance(k, tuple) and mapping.saml_attribute in k:
+                for matching_value in attrs[k]:
+                    if mapping.value in matching_value:
+                        return True
+        return False
 
     def equals(self, attrs, mapping):
         matching_value = ''
         for k in attrs:
-            if isinstance(k, tuple) and k[0] == mapping.saml_attribute:
-                matching_value = attrs[k][0]
-                break
-        return mapping.value == matching_value
+            if isinstance(k, tuple) and mapping.saml_attribute in k:
+                for matching_value in attrs[k]:
+                    if mapping.value == matching_value:
+                        return True
+        return False
